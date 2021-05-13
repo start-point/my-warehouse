@@ -79,8 +79,9 @@ body {
     z-index: 9999;
     text-align: center;
     box-shadow: 0 16px 16px rgb(217 207 196 / 49%);
-    opacity: 0;
-    z-index: -99;
+    /* opacity: 0; */
+    display: none;
+    z-index: 999;
 }
 
 .block-none p:nth-of-type(1) {
@@ -733,10 +734,9 @@ body {
 
 /* 购物隐藏 */
 
-
-/* .main-block-left {
+.main-block-left {
     display: none;
-} */
+}
 
 
 /* 购物界面隐藏 */
@@ -745,7 +745,6 @@ body {
     position: absolute;
     width: 710px;
     min-height: 450px;
-    display: none;
 }
 
 .main-none-left ul {

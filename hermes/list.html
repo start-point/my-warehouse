@@ -46,6 +46,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- 登陆成功用户名展示 -->
             <div class="username-block">
                 <span><a href="javascript:void(0);"><p></p></a></span><button>退出</button>
@@ -113,10 +114,17 @@
 
 </body>
 <script src="./js/jquery.js"></script>
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="./layer/layer.js"></script>
 <script src="./js/SuckTop.js"></script>
 <script src="./js/page.js"></script>
 <script src="./js/menu.js"></script>
 <script>
+    let dataD = []
+    var index = layer.load(15, {
+        shade: [0.7, '#fff'] //0.1透明度的白色背景
+    });
+
     $.get('./php/list.php', res => {
         let {
             meta: {
@@ -137,20 +145,33 @@
                 var str = '';
                 for (var i = 0; i < arr.length; i++) {
                     str += `
-                        <a href="./details.html">
+                        <a href="./details.html" class="a-obtain" ids=${i}>
                             <img src="${arr[i].imgPath}" alt="">
                             <p>${arr[i].describe}</p>
                             <p> ¥${arr[i].price} </p>
                         </a>
-                `
+                    `
                 }
                 $('.goods').html(str)
+                obtain()
             })
             p.init()
-        } else {
-            // location.href = "home.html"
         }
+        layer.close(index)
+
     }, 'json')
+
+    function obtain() {
+        $('.a-obtain').click(function() {
+            dataD.push({
+                img: $(this).find("img").last().attr('src'),
+                p1: $(this).find("p").first().text(),
+                p2: $(this).find("p").last().text(),
+                ids: $(this).attr('ids'),
+            })
+            localStorage.setItem('dataD', JSON.stringify(dataD))
+        })
+    }
 </script>
 
 </html>

@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/iconfont.css">
     <link rel="stylesheet" href="./css/list.css">
@@ -29,10 +28,10 @@
                     <a href="./Hermes.html"><img src="https://www.hermes.cn/sites/all/themes/custom/hermes/img/hermes-logo.svg" alt=""></a>
                 </div>
                 <div class="login-registered">
-                    <a href="#">
+                    <a href="javascript:void(0);">
                         <p><span class="iconfont">&#xe77c;</span>账户</p>
                     </a>
-                    <a href="#">
+                    <a href="./shopping.html">
                         <p>
                             <span class="iconfont">&#xe633;</span>
                             <span class="acount">购物袋</span>
@@ -48,6 +47,7 @@
         <!-- end -->
     </div>
     <!-- end -->
+
     <!-- 登录右边的按钮 -->
     <div id="menu">
         <div class="menu-content">
@@ -75,7 +75,7 @@
         <div class="shapping-left">
             <ul>
                 <li class="active">
-                    <a href="javascript:;"> <img src="https://assets.hermes.cn/is/image/hermesproduct/riley-sport%E7%94%B7%E5%A3%AB%E4%BE%BF%E5%B8%BD--211045N%201V-front-1-300-0-1100-1100_b.jpg" alt="">
+                    <a href="javascript:;"> <img src="" alt="">
                     </a>
                 </li>
                 <li>
@@ -87,7 +87,7 @@
         <div class="shapping-center">
             <ul>
                 <li class="hover">
-                    <a href="javascript:;"><img src="https://assets.hermes.cn/is/image/hermesproduct/riley-sport%E7%94%B7%E5%A3%AB%E4%BE%BF%E5%B8%BD--211045N%201V-front-1-300-0-1100-1100_b.jpg" alt=""></a>
+                    <a href="javascript:;"><img style="width: 650px; height: 650px;" src="" alt=""></a>
                 </li>
                 <li>
                     <a href="javascript:;"><img src="https://assets.hermes.cn/is/image/hermesproduct/riley-sport%E7%94%B7%E5%A3%AB%E4%BE%BF%E5%B8%BD--211045N%201V-back-2-300-0-1100-1100_b.jpg" alt=""></a>
@@ -114,12 +114,12 @@
                 <p>帽冠高度：17厘米 | 帽舌长度：7.5厘米</p>
             </div>
             <div class="Serial-number">
-                <p><span>编号: </span><span>H211045N</span></p>
+                <p><span>编号: </span><span>1</span></p>
             </div>
             <div class="bigContent">
                 <ul>
                     <li class="bighover">
-                        <img src="https://assets.hermes.cn/is/image/hermesproduct/riley-sport%E7%94%B7%E5%A3%AB%E4%BE%BF%E5%B8%BD--211045N%201V-front-1-300-0-1100-1100_b.jpg" alt="">
+                        <img src="" alt="" style="width: 1200px; height: 1200px;">
                     </li>
                     <li>
                         <img src="https://assets.hermes.cn/is/image/hermesproduct/riley-sport%E7%94%B7%E5%A3%AB%E4%BE%BF%E5%B8%BD--211045N%201V-back-2-300-0-1100-1100_b.jpg" alt="">
@@ -129,7 +129,7 @@
             <div class="block-none">
                 <p class="iconfont">&#xe633;</p>
                 <p>此货品已成功添加到购物袋</p>
-                <button>查看购物袋</button>
+                <button><a href="./shopping.html">查看购物袋</a></button>
             </div>
         </div>
     </div>
@@ -155,16 +155,23 @@
         </div>
     </div>
 </body>
-<script src="./js/untils.js"></script>
 <script src="./js/SuckTop.js"></script>
-<script src="./js/shapping.js"></script>
 <script src="./js/jquery.js"></script>
-<!-- 添加购物 -->
-<script src="./js/connection.js"></script>
-<!-- 右边登录 -->
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="./layer/layer.js"></script>
+<script src="./js/gouwu.js"></script>
 <script src="./js/menu.js"></script>
+<script src="./js/shapping.js"></script>
 <script>
-    new Overall()
+    let data = localStorage.getItem('dataD')
+    if (data) {
+        data = JSON.parse(data)
+        $('.shapping-left ul li:nth-of-type(1) a>img').attr('src', data[0].img)
+        $('.shapping-center ul li:nth-of-type(1) a>img').attr('src', data[0].img)
+        $('.the-name h1').text(data[0].p1)
+        $('.the-name p').text(data[0].p2)
+        $('.Serial-number p span:nth-of-type(2)').text((data[0].ids - 0) + 1)
+    }
 </script>
 
 </html>

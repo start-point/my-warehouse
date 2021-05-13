@@ -16,7 +16,7 @@
     <div id="home-page">
         <div class="home-page-head">
             <div class="header">
-                <div class="return"><a href="javascript:;"><span class="iconfont">&#xe65d;</span><span>返回</span></a></div>
+                <div class="return"><a href="javascript:;"><span class="iconfont">&#xe65d;</span><span class="goback">返回</span></a></div>
                 <div class="lo">
                     <a href="./Hermes.html"><img src="https://www.hermes.cn/sites/all/themes/custom/hermes/img/hermes-logo.svg" alt=""></a>
                 </div>
@@ -24,45 +24,25 @@
         </div>
         <div id="main">
             <!-- 购物 -->
-            <div class="main-block-left">
-                <div class="mian-block-center">
-                    <p class="iconfont">&#xe633;</p>
-                    <p>您的购物袋为空</p>
-                    <button><a href="./Hermes.html">继续购物</a></button>
+            <div class="nex">
+                <div class="main-block-left">
+                    <div class="mian-block-center">
+                        <p class="iconfont">&#xe633;</p>
+                        <p>您的购物袋为空</p>
+                        <button><a href="./Hermes.html">继续购物</a></button>
+                    </div>
                 </div>
             </div>
             <!-- 添加购物的界面 -->
             <div class="main-none-left">
                 <p>您的购物袋中有<span>0</span>件货品</p>
                 <div class="icuparent">
-                    <ul class="clearfix">
-                        <div class="icu">❌</div>
-                        <li>
-                            <div class="Shopping-goods">
-                            </div>
-                            <div class="Shopping-introduce">
-                                <p>名字</p>
-                                <p>颜色:<span>xxx</span></p>
-                                <p>尺码:<span>xxx</span></p>
-                                <p><span>编号:</span><span></span></p>
-                            </div>
-                            <div class="commodity">
-                                <div>
-                                    <span>-</span>
-                                    <span>0</span>
-                                    <span>+</span>
-                                </div>
-                            </div>
-                            <div class="shapping-money">
-                                <p>￥<span>0000</span>.00</p>
-                            </div>
-                        </li>
-                    </ul>
+
                 </div>
 
                 <div class="count clearfix">
                     <p>总计</p>
-                    <p>￥<span>0000</span>.00</p>
+                    <p>￥<span class="total">0000</span>.00</p>
                 </div>
                 <div class="settlement">
                     <button>结算</button>
@@ -121,10 +101,213 @@
 </body>
 
 <script src="./js/untils.js"></script>
-<script src="./js/jquery.js"></script>
-<script src="./js/connection.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="./layer/layer.js"></script>
+<script src="./js/gouwu.js"></script>
 <script>
-    new Shapping()
+    let num = JSON.parse(localStorage.getItem('number')).flat()
+    let str = ``
+    if (localStorage.getItem('number')) {
+        $('.main-block-left').css('display', 'none')
+        let numOccurences
+        let it = JSON.parse(localStorage.getItem('ap'))
+        let goodobj = {}
+        it.forEach(v => {
+            goodobj[v] = 0
+        })
+        for (let attr in goodobj) {
+            for (let i = 0; i < it.length; i++) {
+                if (attr - 0 == it[i] - 0) {
+                    goodobj[attr]++
+                }
+            }
+        }
+        console.log(goodobj)
+        console.log(it)
+        for (const key in num) {
+            let target = num[key].id - 0
+            numOccurences = $.grep(JSON.parse(localStorage.getItem('ap')), function(elem) {
+                return elem == target;
+            }).length;
+        }
+        for (const key in num) {
+            let mone = num[key].price - 0
+            str += `
+                <ul class="length-block clearfix">
+                    <input type="checkbox" class="checkB">
+                    <div class="icu">❌</div>
+                    <li>
+                        <div class="Shopping-goods">
+                            <img src="${num[key].imgPath}">
+                        </div>
+                        <div class="Shopping-introduce">
+                            <p>名字:${num[key].describe}</p>
+                            <p>颜色:<span>${num[key].describe}</span></p>
+                            <p>尺码:<span>${num[key].describe}</span></p>
+                            <p><span>编号:</span><span class="id">${num[key].id}</span></p>
+                        </div>
+                        <div class="commodity">
+                            <div>
+                                <span class="down-data">-</span>
+                                <span class="shu-data">${goodobj[num[key].id]}</span>
+                                <span class="up-data">+</span>
+                            </div>
+                        </div>
+                        <div class="shapping-money">
+                            <p>￥<span class="money-data">${goodobj[num[key].id]*mone}</span>.00</p>
+                        </div>
+                    </li>
+                </ul>
+                `
+            $('.icuparent').html(str)
+        }
+        add()
+        addis()
+        check()
+        settlement()
+        remo()
+    } else {
+        $('.main-none-left').css('display', 'none')
+        $('.main-block-left').css('display', 'block')
+        add()
+    }
+
+    // 增加
+    function add() {
+        let arrp = JSON.parse(localStorage.getItem('ap'))
+        let obj = {}
+        let a
+        $('.up-data').click(function() {
+            a = $(this).parent().parent().parent().find('.id').text()
+            arrp.push(a)
+            let aplocal = JSON.parse(localStorage.getItem('ap'))
+            if (aplocal == null) {
+                ap.push(a)
+                localStorage.setItem('ap', JSON.stringify(ap))
+            } else {
+                let arry = JSON.parse(localStorage.getItem('ap'))
+                arry.push(a)
+                localStorage.setItem('ap', JSON.stringify(arry))
+                aplocal = JSON.parse(localStorage.getItem('ap'))
+                let target = a
+                let numOccurences = $.grep(aplocal, function(elem) {
+                    return elem == target;
+                }).length;
+                obj[target] = numOccurences
+                if (obj[target] != target) {
+                    obj[target] = numOccurences
+                }
+                $(this).prev().text(obj[target])
+                if (JSON.parse(localStorage.getItem('number'))[0].price == null) {
+                    $(this).parent().parent().parent().find('.money-data').text(numOccurences * (JSON.parse(localStorage.getItem('number'))[0][0].price - 0))
+                } else {
+                    $(this).parent().parent().parent().find('.money-data').text(numOccurences * (JSON.parse(localStorage.getItem('number'))[0].price - 0))
+                }
+
+            }
+            addis()
+        })
+    }
+
+    // 减少
+    function addis(numOccurences) {
+        let a
+        let arris = JSON.parse(localStorage.getItem('ap'))
+        $('.down-data').click(function() {
+            a = $(this).parent().parent().parent().find('.id').text()
+            if (arris.length != 0) {
+                localStorage.setItem('ap', JSON.stringify(arris))
+                arris.splice($.inArray(a, arris), 1)
+                let target = a
+                let numOccurences = $.grep(JSON.parse(localStorage.getItem('ap')), function(elem) {
+                    return elem == target;
+                }).length;
+                $(this).next().text(numOccurences)
+                if (JSON.parse(localStorage.getItem('number'))[0].price == null) {
+                    $(this).parent().parent().parent().find('.money-data').text(numOccurences * (JSON.parse(localStorage.getItem('number'))[0][0].price - 0))
+                } else {
+                    $(this).parent().parent().parent().find('.money-data').text(numOccurences * (JSON.parse(localStorage.getItem('number'))[0].price - 0))
+                }
+
+            } else {
+                return false
+            }
+        })
+    }
+
+
+    // 删除
+    function remo() {
+        let i
+        let arris = JSON.parse(localStorage.getItem('ap'))
+        if (!(JSON.parse(localStorage.getItem('number')).length)) {
+            $('.main-none-left').css('display', 'none')
+            $('.main-block-left').css('display', 'block')
+            return false
+        }
+        $('.icu').click(function() {
+            if ($('.icuparent').children().length = 1) {
+                $(this).parent().remove()
+            } else {
+                $(this).parent().remove()
+            }
+            for (let i = 0; i < num.length; i++) {
+                let num1 = arris.filter(function(evt) {
+                    return evt != num[i].id - 0
+                })
+                localStorage.setItem('ap', JSON.stringify(num1))
+                let item = JSON.parse(localStorage.getItem('number'))
+
+                item.forEach((ele, k, a) => {
+                    if (ele.id == num[i].id) {
+                        i = k
+                    }
+
+                });
+                item.splice(i, 1)
+                localStorage.setItem('number', JSON.stringify(item))
+            }
+        })
+    }
+
+    // 单选框
+    function check() {
+        $('.checkB').click(function() {
+            if (this.checked) {
+                $('.total').text($(this).parent().find('.money-data').text())
+            } else {
+                $('.total').text("0000")
+            }
+            tot()
+        })
+    }
+
+    // 计算总价
+    function tot() {
+        var totalNumber = 0
+        var totalPrice = 0
+        $('.checkB:checked').each(function(i, checkbox) {
+            let xiaoji = $(checkbox).parent().find('.money-data').text() - 0
+            totalPrice += xiaoji
+        })
+        $('.total').text(totalPrice)
+    }
+
+    function settlement() {
+        $('.settlement button').click(function() {
+            $.cookie('setname')
+            if (typeof($.cookie('setname')) == "undefined") {
+                layer.msg('请先去首页账户登录,才能以您的身份付款!!');
+                return false
+            }
+            layer.tips('这次结算的金额是:' + $('.total').text(), $(this));
+        })
+    }
+
+    $('.goback').click(function() {
+        history.go(-1)
+    })
 </script>
 
 </html>

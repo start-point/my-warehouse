@@ -1,4 +1,5 @@
 <?php
+
 header("content-type:text/html;charset=utf8");
 $name = $_POST['name'];
 $account = $_POST['account'];

@@ -21,13 +21,20 @@ $('.menu-btn-login').click(function() {
                 username.css("display", "block")
                 $('.username-block button span a p').html(date)
                 $('.username-block span a p').text(date)
-                alert(message)
+                    // alert(message)
+                layer.alert(message, {
+                    icon: 1,
+                    skin: 'layer-ext-demo'
+                })
                 $('.menu-btn-say').parent().parent().animate({
                     width: 0,
                 }, 'linear')
 
             } else if (status == 0) {
-                alert(message)
+                layer.alert(message, {
+                    icon: 2,
+                    skin: 'layer-ext-demo'
+                })
             }
         },
         "text"
@@ -41,6 +48,7 @@ $('.username-block button').click(function() {
     if (!confirm('确定要退出该账户嘛')) {
         return false
     }
-    $.cookie("setname", null)
+    $.removeCookie("setname")
     username.css("display", "none")
+    layer.msg('再见了您嘞', { icon: 5 });
 })

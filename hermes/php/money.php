@@ -1,4 +1,5 @@
 <?php
+
 header("content-type:text/html;charset=utf8");
 $number = $_POST['number'];
 $con = mysqli_connect('localhost','root','root','content');

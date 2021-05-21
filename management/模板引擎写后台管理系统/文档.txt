@@ -1,0 +1,3 @@
+需要mongodb 
+
+运行  nodemon main.js

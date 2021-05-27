@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>天知道</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/iconfont.css" />
+    <link rel="stylesheet" href="css/main2.css" />
+    <style>
+        .tem .iconfont {
+            font-size: 50px;
+        }
+        
+        .list-enter-active,
+        .list-leave-active {
+            transition: all 1s;
+        }
+        
+        .list-enter,
+        .list-leave-to {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap" id="app">
+        <!-- 顶部输入查询 -->
+        <div class="search_form">
+            <div class="logo"><img src="img/logo.png" alt="logo" /></div>
+            <div class="form_group">
+                <input type="text" class="input_txt" placeholder="请输入查询的天气" v-model="search" @keyup.enter="mySearch" />
+                <button class="input_sub" @click="mySearch" :class=" bool ?  'loading' : ' '  ">搜 索</button>
+            </div>
+            <div class="hotkey">
+                <a href="javascript:;" @click=" search = '北京' ; mySearch() ">北京</a>
+                <a href="javascript:;" @click=" search = '上海' ; mySearch() ">上海</a>
+                <a href="javascript:;" @click=" search = '广州' ; mySearch() ">广州</a>
+                <a href="javascript:;" @click=" search = '深圳' ; mySearch() ">深圳</a>
+            </div>
+        </div>
+        <!-- 天气查询结果显示  -->
+        <transition-group name="list" tag="ul" class="weather_list">
+            <li v-for="(item, index) in arry.forecast" :key="index" :style=" {transitionDelay: index*200 + 'ms'} ">
+                <div class="info_type">
+                    <span class="iconfont">
+                      {{ /雨/.test(item.type) ? '&#xe931;' : ( /晴/.test(item.type) ? '&#xe933;' : ( /阴/.test(item.type) ? '&#xe92d;' : ( /雪/.test(item.type) ? '&#xeb87;' : (/云/.test(item.type) ? '&#xeb79;' : (/雹/.test(item.type) ? '&#xeb76;' : (/雾/.test(item.type) ? '&#xeb75;' : ' ') ) ) ) ) ) }}
+                      {{ /雷/.test(item.type) ? '&#xeb77;' : ' ' }}
+                    </span>
+                </div>
+                <div class="info_temp">高 <b>{{ item.high.split(" ")[1] }}</b><br />低 {{ item.low.split(" ")[1] }}</div>
+                <div class="info_date"><b>{{ arry.city }}</b><span>{{ item.date }}</span></div>
+            </li>
+        </transition-group>
+    </div>
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="./js/axios.js"></script>
+<script>
+    const app = new Vue({
+        el: "#app",
+        data: {
+            // 绑定input搜索的值 默认为空
+            search: "",
+            // 循环渲染的数据
+            arry: [],
+            // 定义一个开关
+            bool: false,
+        },
+        methods: {
+            // 绑定事件 获取数据
+            mySearch(city) {
+                // 每次点击的时候 都把上一次的清空
+                this.arry = [];
+                // console.log(city)
+                // if (city) this.search = city;
+                if (!this.search) return;
+                this.bool = true;
+                axios.get("http://wthrcdn.etouch.cn/weather_mini?city=" + this.search)
+                    .then(res => {
+                        this.arry = res.data.data;
+                        this.bool = false;
+                    })
+                    .catch(err => {
+                        console.log("没有获取到");
+                    })
+            }
+        },
+    })
+</script>
+
+</html>

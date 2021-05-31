@@ -1,0 +1,92 @@
+#block-content-wrap {
+    width: 1400px;
+    height: 700px;
+    margin: 15% auto 10% auto;
+    color: black;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.row a {
+    margin: 1.5%;
+    color: #444;
+}
+
+.row a p:nth-of-type(1) {
+    font-size: 18px;
+    font-weight: 400;
+    padding: 8px 0 5px 0;
+}
+
+.row a p:nth-of-type(2) {
+    font-size: 14px;
+    position: relative;
+    left: 5px;
+    font-weight: 400;
+}
+
+.container {
+    margin-bottom: 4%;
+}
+
+
+/* 成功用户显示 */
+
+.username-block {
+    position: absolute;
+    min-width: 8%;
+    height: 40%;
+    border-radius: 4px;
+    background: #f6f1eb;
+    right: 10%;
+    bottom: -50%;
+    z-index: 999;
+    box-shadow: -5.557px 5.755px 13px rgb(89 66 34 / 47%);
+    opacity: .9;
+    display: none;
+}
+
+.username-block a {
+    display: block;
+    width: 85px;
+    text-align: center;
+    box-sizing: border-box;
+    line-height: 45px;
+    padding-left: 15px;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.username-block span:hover a p {
+    text-decoration: underline;
+    color: #444;
+}
+
+.username-block::after {
+    content: " ";
+    top: -20%;
+    left: 20%;
+    position: absolute;
+    border-bottom: 10px solid #ece3d8;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
+
+.username-block button {
+    width: 30%;
+    height: 100%;
+    float: left;
+    border: none;
+    background: #f6f1eb;
+    float: right;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 4px;
+}
